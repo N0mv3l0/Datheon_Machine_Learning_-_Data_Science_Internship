@@ -1,0 +1,19 @@
+## Final Conclusion
+
+The objective of this project was to develop and benchmark a supervised multi-class classification pipeline capable of predicting Iris flower species using four measurements: sepal length, sepal width, petal length and petal width.
+
+Following the 12-step Machine Learning Process, the dataset was loaded, inspected, cleaned and explored through exploratory data analysis (EDA). One duplicate record was identified and removed, leaving 149 observations with no missing values. The dataset was subsequently divided into 80% training data (119 records) and 20% testing data (30 records), using stratified sampling to maintain the distribution of the three flower species.
+
+Two classification algorithms, Logistic Regression and Decision Tree, were implemented using Scikit-Learn pipelines. StandardScaler was incorporated into the pipelines to standardise the input features and prevent data leakage by fitting the scaler exclusively on the training data.
+
+The evaluation results showed that both models achieved an accuracy of **93.33%**, with weighted precision, recall and F1-scores of **93.33%**. Their classification reports produced identical results across all three species. Both models correctly classified all 10 Iris-setosa observations, while achieving 90% precision, recall and F1-score for Iris-versicolor and Iris-virginica.
+
+The confusion matrices confirmed that each model correctly classified 28 out of the 30 test observations, with two misclassifications occurring between Iris-versicolor and Iris-virginica.
+
+Based on these findings, both algorithms demonstrated strong classification performance on the selected test dataset. Neither model showed a measurable performance advantage over the other using the evaluation metrics considered. Logistic Regression is a reasonable baseline model, while Decision Tree provides an alternative that can represent classification decisions through interpretable rules.
+
+For further improvement, I would recommend experimenting with hyperparameter tuning, cross-validation and additional performance comparisons to assess model consistency across different data splits.
+
+Finally, although the trained pipelines were saved for potential future use, actual deployment and continuous monitoring remain future considerations. In a production environment, monitoring would include checking incoming data for data drift and evaluating prediction accuracy as new labelled observations become available.
+
+**Overall, this project strengthened my practical understanding of supervised machine learning, data preprocessing, feature scaling, model training, performance evaluation and the importance of following a structured end-to-end machine learning workflow.**
