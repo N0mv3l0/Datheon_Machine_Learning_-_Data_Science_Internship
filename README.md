@@ -2,4 +2,4 @@
 
 ## This repository includes all case studies
 
-### 1. 
+### 1. Multi-Class Benchmark Classification Pipeline (Iris-Wine)
