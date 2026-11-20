@@ -1,0 +1,219 @@
+# CONCLUSION REPORT
+## Datheon Machine Learning & Data Science Internship – Task 2
+### Predictive Customer Churn Classifier Using Random Forest and XGBoost
+
+**Project:** Predictive Customer Churn Classifier  
+**Dataset:** Telco Customer Churn  
+**Tools and Technologies:** Python, Pandas, NumPy, Matplotlib, Scikit-learn, XGBoost and Databricks  
+**Task:** 2 – Machine Learning
+
+---
+
+## 1. Introduction
+
+The objective of this project was to develop a supervised machine learning classification model capable of predicting whether a telecommunications customer is likely to discontinue their service. Customer churn is an important business challenge because losing existing customers can affect revenue and increase the costs associated with acquiring new customers.
+
+The project focused on using historical customer information to identify patterns associated with churn and to build a predictive solution that could help a telecommunications business identify customers who may require retention support.
+
+Two machine learning algorithms, Random Forest and XGBoost, were developed and evaluated to determine which model provided the strongest predictive performance.
+
+## 2. Dataset Overview and Preparation
+
+The project used the Telco Customer Churn dataset, which contained **7,043 customer records and 21 original columns**.
+
+The target variable was `Churn`, which identified whether a customer had remained with the company or discontinued the service.
+
+The dataset contained:
+
+- 5,174 customers who did not churn (73.46%).
+- 1,869 customers who churned (26.54%).
+
+This distribution demonstrated an imbalance between the two target classes. To address this, class weighting was incorporated into the machine learning algorithms.
+
+Several data preparation activities were completed, including:
+
+- Inspecting the dataset structure and identifying data types.
+- Checking for and removing duplicate records.
+- Converting `TotalCharges` from text to a numeric format.
+- Identifying missing values.
+- Excluding `customerID`, as it is an identifier rather than a meaningful behavioural predictor.
+- Applying median imputation to missing numerical values.
+- Applying most-frequent-value imputation to missing categorical values.
+- Using OneHotEncoder to convert categorical variables into numerical features.
+
+The dataset was divided into an 80% training set and a 20% testing set using stratified sampling. This resulted in 5,634 training records and 1,409 testing records.
+
+## 3. Exploratory Data Analysis
+
+Exploratory Data Analysis (EDA) was conducted to understand the distribution of customer churn and investigate relationships between customer characteristics and churn behaviour.
+
+The visualisations included:
+
+1. Customer churn distribution.
+2. Churn percentage by contract type.
+3. Monthly charges by churn status.
+4. Average tenure, monthly charges and total charges grouped by churn status.
+
+The analysis provided an overview of customer behaviour and helped identify patterns worth considering during model development.
+
+Contract type, customer tenure and billing-related variables were particularly relevant to the subsequent feature importance analysis.
+
+## 4. Model Development
+
+Two ensemble learning algorithms were implemented.
+
+**Random Forest Classifier**
+
+The Random Forest model was configured with 300 decision trees and balanced class weighting. A minimum of two samples per leaf was also specified.
+
+**XGBoost Classifier**
+
+The XGBoost model was configured with 300 boosting estimators, a maximum tree depth of four and a learning rate of 0.05. The `scale_pos_weight` parameter was used to account for the imbalance between churn and non-churn customers.
+
+Both models were incorporated into preprocessing pipelines to ensure that data preparation was performed consistently during training and evaluation.
+
+Five-fold stratified cross-validation was performed using the training dataset. The final models were subsequently evaluated against the independent test dataset.
+
+## 5. Model Performance and Results
+
+### 5.1 Five-fold cross-validation
+
+| Model | Mean ROC-AUC | Standard deviation |
+|---|---:|---:|
+| Random Forest | 83.70% | 0.87 percentage points |
+| XGBoost | 84.51% | 0.99 percentage points |
+
+XGBoost achieved the higher average cross-validation ROC-AUC, indicating a slightly stronger ability to distinguish between customers who churn and those who remain.
+
+### 5.2 Final test-set evaluation
+
+The following results were obtained from the independent test dataset:
+
+| Evaluation metric | Random Forest | XGBoost |
+|---|---:|---:|
+| Accuracy | 78.42% | 75.37% |
+| Precision | 58.41% | 52.42% |
+| Recall | 64.97% | 78.07% |
+| F1-score | 61.52% | 62.73% |
+| ROC-AUC | 83.48% | **84.17%** |
+
+### 5.3 Interpretation of results
+
+The results demonstrate that both models achieved ROC-AUC scores above the project's required benchmark of 80%.
+
+Random Forest achieved higher accuracy and precision. This indicates that it produced a greater proportion of correct overall predictions and a higher proportion of correct predictions among customers classified as likely to churn.
+
+However, XGBoost achieved higher recall and a slightly higher F1-score. Its recall of 78.07% means that it identified a larger proportion of the customers who actually churned.
+
+For a customer retention application, this higher recall may be particularly valuable because identifying more customers at risk of leaving could give the business additional opportunities to intervene.
+
+Based on the higher test ROC-AUC and recall, **XGBoost was selected as the preferred model for this project**.
+
+## 6. Feature Importance Analysis
+
+Feature importance was examined to understand which variables contributed most to the predictions made by each model.
+
+The Random Forest model identified the following leading features:
+
+- Tenure – 12.85%.
+- Total Charges – 12.57%.
+- Monthly Charges – 9.91%.
+- Month-to-month Contract – 9.28%.
+- No Online Security – 4.82%.
+- Two-year Contract – 4.45%.
+- No Tech Support – 3.83%.
+- Fiber Optic Internet – 3.77%.
+- Electronic Check – 3.15%.
+- No Online Backup – 1.78%.
+
+The XGBoost model identified the following leading features:
+
+- Month-to-month Contract – 39.33%.
+- Fiber Optic Internet – 9.79%.
+- No Online Security – 9.54%.
+- DSL Internet – 3.45%.
+- Two-year Contract – 3.32%.
+- No Tech Support – 2.94%.
+- Streaming Movies – 2.78%.
+- One-year Contract – 2.38%.
+- Electronic Check – 1.90%.
+- Tenure – 1.60%.
+
+The findings show that contract type, tenure, internet services, security services and billing-related characteristics were important to the models' predictions.
+
+In particular, the month-to-month contract feature had a substantial importance score in XGBoost.
+
+These results could help the business investigate customer retention strategies, such as reviewing the customer experience of month-to-month subscribers and assessing whether additional support or suitable contract options could improve customer retention.
+
+It is important to note that feature importance reflects how the models use variables when making predictions. It does not establish that any individual feature directly causes customer churn.
+
+## 7. Business Value and Practical Application
+
+The completed project demonstrates how machine learning can support customer retention activities in the telecommunications industry.
+
+A trained churn prediction model could be used to:
+
+- Identify customers who may be at risk of discontinuing their subscriptions.
+- Prioritise customer retention activities.
+- Help customer service teams focus on customers with higher predicted churn risk.
+- Support the development of targeted customer engagement strategies.
+- Provide insights into customer characteristics associated with churn predictions.
+
+For example, a telecommunications company could use the model's churn probabilities to generate a list of customers who may require follow-up.
+
+However, predicted churn probabilities should be treated as risk estimates rather than guarantees. The business should also determine an appropriate intervention threshold based on the cost of contacting customers and the financial impact of losing them.
+
+## 8. Limitations and Recommendations for Improvement
+
+Although the project achieved its required ROC-AUC benchmark, further improvements could strengthen the predictive solution.
+
+The following enhancements are recommended:
+
+1. **Hyperparameter tuning:** Use GridSearchCV or RandomizedSearchCV to investigate whether alternative model configurations improve performance.
+
+2. **Class imbalance experimentation:** Compare the current class-weighting approach with techniques such as SMOTE to determine whether they offer additional benefits.
+
+3. **Classification threshold optimisation:** Investigate different probability thresholds to balance precision, recall and the business costs associated with retention interventions.
+
+4. **Model explainability:** Apply SHAP to provide more detailed explanations of individual predictions and overall model behaviour.
+
+5. **Model calibration:** Evaluate whether predicted probabilities accurately represent actual churn likelihood.
+
+6. **Testing with newer data:** Validate the model against more recent customer records to assess how well it generalises to changing customer behaviour.
+
+7. **Deployment:** Consider integrating the saved model pipeline into an internal application, API or customer retention dashboard.
+
+8. **Continuous monitoring:** Monitor model performance and data drift, and retrain the model when necessary.
+
+The model should undergo further validation before being used to make operational business decisions.
+
+## 9. Overall Conclusion
+
+The Datheon Task 2 project successfully demonstrated an end-to-end supervised machine learning workflow for predicting telecommunications customer churn.
+
+The project covered the key stages of the machine learning process, including defining the business problem, collecting and preparing data, performing exploratory analysis, developing predictive models, evaluating performance and considering deployment and monitoring.
+
+Both Random Forest and XGBoost produced encouraging results. Random Forest achieved a test ROC-AUC of 83.48%, while XGBoost achieved 84.17%. The XGBoost model therefore exceeded the required 80% benchmark and was selected as the preferred model based on its stronger ROC-AUC and recall performance.
+
+The feature importance analysis also provided useful insight into the variables influencing model predictions, particularly contract type, tenure, internet services and customer billing characteristics.
+
+From a business perspective, the project demonstrated how predictive analytics can help telecommunications organisations identify customers who may be at risk of leaving and support more informed customer retention strategies.
+
+From a technical and professional development perspective, this assignment strengthened my practical understanding of Python programming, data cleaning, exploratory data analysis, feature preprocessing, ensemble learning, class imbalance, cross-validation, model evaluation and feature importance.
+
+It also improved my ability to approach a business problem analytically, translate it into a machine learning solution and communicate the findings in a structured and professional manner.
+
+**In conclusion, the project achieved its main objective of developing and evaluating a customer churn classification solution, with XGBoost emerging as the preferred model. It provided a valuable practical learning experience and demonstrated the potential of machine learning to support data-driven business decision-making.**
+
+---
+
+## 10. Acknowledgement
+
+This project was completed as part of the **Datheon Machine Learning and Data Science Internship – Task 2**.
+
+I would like to thank Datheon for providing an opportunity to apply machine learning concepts to a practical business problem and to strengthen my technical and analytical skills through project-based learning.
+
+**Programme:** Datheon Training and Internships  
+**Website:** https://www.datheon.in/training
+
+**End of Report**
