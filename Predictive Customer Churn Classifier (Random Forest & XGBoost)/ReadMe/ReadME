@@ -1,0 +1,350 @@
+# Predictive Customer Churn Classifier – Random Forest & XGBoost
+
+## 1. Project Overview
+
+This project was completed as part of the **Datheon Machine Learning & Data Science Internship – Task 2**.
+
+The project focuses on developing a predictive customer churn classification system using two ensemble machine learning algorithms: **Random Forest and XGBoost**.
+
+Customer churn occurs when customers discontinue a service or subscription. For telecommunications businesses, identifying customers who are likely to leave is important for improving customer retention, reducing customer acquisition costs and supporting business decision-making.
+
+The objective was to train and evaluate machine learning models that can predict customer churn using historical telecommunications subscription records.
+
+**Project achievement:** The XGBoost classifier achieved a test ROC-AUC score of **84.17%**, exceeding the project's required benchmark of 80%.
+
+## 2. Business Problem
+
+Telecommunications companies face the ongoing challenge of retaining customers in a competitive market.
+
+The business problem addressed in this project is:
+
+*How can a telecommunications company identify customers who are likely to discontinue their subscriptions so that appropriate customer retention strategies can be implemented?*
+
+This is a supervised binary classification problem.
+
+The target variable is:
+
+- `Yes` – Customer has churned.
+- `No` – Customer has remained with the company.
+
+The predictive models learn patterns from historical customer information and use those patterns to estimate the likelihood of churn.
+
+## 3. Project Objectives
+
+The main objectives were to:
+
+1. Load and inspect the Telco Customer Churn dataset.
+2. Clean the dataset and convert `TotalCharges` into a numeric format.
+3. Perform exploratory data analysis (EDA).
+4. Preprocess categorical variables using OneHotEncoder.
+5. Address class imbalance using class weighting.
+6. Split the dataset into 80% training and 20% testing.
+7. Train Random Forest and XGBoost classifiers.
+8. Perform five-fold stratified cross-validation.
+9. Evaluate model performance using ROC-AUC, accuracy, precision, recall and F1-score.
+10. Visualise ROC curves and confusion matrices.
+11. Identify the ten most influential features for each model.
+12. Select the best-performing model based on test ROC-AUC.
+
+## 4. Dataset Description
+
+**Dataset:** Telco Customer Churn
+
+The dataset contains telecommunications customer subscription records, including customer demographics, services, billing information and churn status.
+
+| Dataset information | Details |
+| ------------------- | ------- |
+| Total records       | 7,043   |
+| Original columns    | 21      |
+| Target variable     | Churn   |
+| Classification type | Binary  |
+| Non-churn customers | 5,174   |
+| Churn customers     | 1,869   |
+
+### Selected features
+
+The dataset includes:
+
+- Customer demographics: Gender and Senior Citizen status.
+- Customer relationships: Partner and Dependents.
+- Subscription information: Tenure and Contract.
+- Telecommunications services: Internet Service, Phone Service and Multiple Lines.
+- Additional services: Online Security, Online Backup and Tech Support.
+- Billing information: Monthly Charges and Total Charges.
+- Target: Churn.
+
+The `customerID` column was excluded from model training because it is an identifier rather than a meaningful behavioural predictor.
+
+The `TotalCharges` column was converted to numeric format during data preparation.
+
+### Class distribution
+
+The target variable was imbalanced:
+
+| Customer status | Records | Percentage |
+| --------------- | ------: | ---------: |
+| Stayed (No)     |   5,174 |     73.46% |
+| Churned (Yes)   |   1,869 |     26.54% |
+
+Class weighting was used to account for this imbalance.
+
+## 5. Technologies and Libraries
+
+The following technologies and Python libraries were used:
+
+| Technology   | Purpose                                 |
+| ------------ | --------------------------------------- |
+| Python       | Programming language                    |
+| Databricks   | Development and execution environment   |
+| Apache Spark | Dataset loading                         |
+| Pandas       | Data manipulation and analysis          |
+| NumPy        | Numerical operations                    |
+| Scikit-Learn | Preprocessing, modelling and evaluation |
+| XGBoost      | Gradient-boosted classification         |
+| Matplotlib   | Data visualisation                      |
+| Joblib       | Saving the trained model                |
+
+## 6. Methodology
+
+The project followed an end-to-end machine learning workflow.
+
+### Phase 1: Problem Definition and Data Collection
+
+- Defined the customer churn prediction problem.
+- Loaded the telecommunications dataset.
+- Inspected the dataset structure, columns and data types.
+
+### Phase 2: Data Preparation
+
+**Data cleaning**
+
+- Checked for duplicate records.
+- Converted `TotalCharges` into numeric format.
+- Excluded the customer identifier from the predictors.
+- Prepared numeric and categorical variables.
+
+**Exploratory Data Analysis**
+
+Three visualisations were generated:
+
+1. Customer churn distribution.
+2. Churn percentage by contract type.
+3. Monthly charges by churn status.
+
+**Feature preprocessing**
+
+- Applied median imputation to numeric features.
+- Applied most-frequent imputation to categorical features.
+- Used OneHotEncoder to convert categorical variables into numerical features.
+
+**Train/test split**
+
+The dataset was divided using an 80/20 stratified split:
+
+- Training dataset: 5,634 records.
+- Testing dataset: 1,409 records.
+
+### Phase 3: Model Development and Evaluation
+
+Two ensemble classification algorithms were implemented.
+
+**Random Forest Classifier**
+
+- 300 decision trees.
+- Balanced class weighting.
+- Minimum samples per leaf: 2.
+- Random state: 42.
+
+**XGBoost Classifier**
+
+- 300 boosting estimators.
+- Maximum tree depth: 4.
+- Learning rate: 0.05.
+- Class imbalance addressed using `scale_pos_weight`.
+- Random state: 42.
+
+Both models were evaluated using five-fold stratified cross-validation on the training data.
+
+The final models were then evaluated against the independent test dataset.
+
+### Phase 4: Deployment and Monitoring
+
+The best-performing fitted pipeline was saved using Joblib as:
+
+`datheon_customer_churn_model.joblib`
+
+The model could be integrated into a customer-retention dashboard or internal business application.
+
+Future monitoring should include model performance, changes in customer behaviour and data drift.
+
+## 7. Model Performance and Results
+
+### Five-fold cross-validation
+
+| Model         | Mean ROC-AUC |     Standard deviation |
+| ------------- | -----------: | ---------------------: |
+| Random Forest |       83.70% | 0.87 percentage points |
+| XGBoost       |       84.51% | 0.99 percentage points |
+
+XGBoost achieved the higher average cross-validation ROC-AUC.
+
+### Final test-set evaluation
+
+| Evaluation metric | Random Forest |    XGBoost |
+| ----------------- | ------------: | ---------: |
+| Accuracy          |        78.42% |     75.37% |
+| Precision         |        58.41% |     52.42% |
+| Recall            |        64.97% |     78.07% |
+| F1-score          |        61.52% |     62.73% |
+| ROC-AUC           |        83.48% | **84.17%** |
+
+### Key achievement
+
+**XGBoost achieved a test ROC-AUC of 84.17%, exceeding the required benchmark of 80%.**
+
+This indicates that the model demonstrates good ability to distinguish between customers who churn and customers who remain.
+
+Although Random Forest achieved higher accuracy and precision, XGBoost achieved higher recall. This means XGBoost identified a larger proportion of actual churn cases at the default classification threshold.
+
+For a customer retention use case, higher recall can be valuable because identifying more customers who may leave gives the business more opportunities to intervene.
+
+## 8. Feature Importance Analysis
+
+Feature importance was extracted from both trained ensemble models to identify which variables contributed most to their predictions.
+
+### Top 10 Random Forest features
+
+| Feature                 | Importance |
+| ----------------------- | ---------: |
+| Tenure                  |     12.85% |
+| Total Charges           |     12.57% |
+| Monthly Charges         |      9.91% |
+| Month-to-month Contract |      9.28% |
+| No Online Security      |      4.82% |
+| Two-year Contract       |      4.45% |
+| No Tech Support         |      3.83% |
+| Fiber Optic Internet    |      3.77% |
+| Electronic Check        |      3.15% |
+| No Online Backup        |      1.78% |
+
+### Top 10 XGBoost features
+
+| Feature                 | Importance |
+| ----------------------- | ---------: |
+| Month-to-month Contract |     39.33% |
+| Fiber Optic Internet    |      9.79% |
+| No Online Security      |      9.54% |
+| DSL Internet            |      3.45% |
+| Two-year Contract       |      3.32% |
+| No Tech Support         |      2.94% |
+| Streaming Movies        |      2.78% |
+| One-year Contract       |      2.38% |
+| Electronic Check        |      1.90% |
+| Tenure                  |      1.60% |
+
+### Business interpretation
+
+The feature importance results suggest that contract type, internet service and additional security services are important predictors within the trained models.
+
+Month-to-month contracts were particularly influential in the XGBoost model.
+
+A telecommunications company could investigate whether customers on flexible contracts would benefit from improved service experiences, loyalty programmes or suitable long-term subscription offers.
+
+Feature importance reflects the model's learned patterns and does not establish causation.
+
+## 9. Visualisations and Deliverables
+
+The completed Jupyter notebook includes:
+
+- Customer churn distribution chart.
+- Churn by contract type chart.
+- Monthly charges distribution chart.
+- Five-fold cross-validation results.
+- ROC curves comparing Random Forest and XGBoost.
+- Confusion matrices for both models.
+- Classification reports.
+- Random Forest top 10 feature importance chart.
+- XGBoost top 10 feature importance chart.
+
+These visualisations help communicate model performance and identify patterns that could support customer retention decisions.
+
+
+
+The original customer dataset is not included in this repository. It should be accessed through the authorised Databricks workspace or another permitted data location.
+
+## 10. How to Run the Project
+
+### Prerequisites
+
+- Python 3.x
+- Jupyter Notebook or Databricks
+- Access to the Telco Customer Churn dataset
+
+### Install dependencies
+
+Run the following command in your Python environment:
+
+```bash
+pip install pandas numpy matplotlib scikit-learn xgboost joblib
+```
+
+### Running in Databricks
+
+1. Import `Datheon_Task_2_Customer_Churn.ipynb` into your Databricks workspace.
+2. Connect to the appropriate Python cluster.
+3. Ensure the dataset is available in the Databricks table:
+
+```python
+workspace.datheon.datheon_task_2
+```
+
+4. Execute the notebook cells sequentially.
+5. Review the evaluation metrics and visualisations.
+6. The selected fitted model is saved as `datheon_customer_churn_model.joblib`.
+
+**Note:** The notebook currently uses a Databricks Spark table as its data-loading source. To run it outside Databricks, replace the Spark loading cell with an appropriate CSV loading command and update the dataset path.
+
+## 11. Limitations and Future Improvements
+
+Although the project achieved its ROC-AUC target, there are opportunities for further improvement.
+
+Future enhancements could include:
+
+- Hyperparameter tuning using GridSearchCV or RandomizedSearchCV.
+- Experimenting with SMOTE and comparing its performance with class weighting.
+- Optimising classification thresholds based on customer retention costs.
+- Using SHAP to improve model explainability.
+- Evaluating model calibration.
+- Testing the model on newer customer records.
+- Deploying the model through an API or interactive dashboard.
+- Monitoring model performance and data drift over time.
+
+The model should be further validated on new data before being used for actual business decisions.
+
+## 11. Conclusion
+
+This project successfully demonstrated an end-to-end supervised machine learning workflow for predicting telecommunications customer churn.
+
+Both Random Forest and XGBoost were trained, cross-validated and evaluated using an independent test dataset.
+
+XGBoost achieved the highest test ROC-AUC score of **84.17%**, exceeding the project's required 80% benchmark.
+
+The project also demonstrated how machine learning can support business decision-making by identifying influential customer characteristics and estimating churn risk.
+
+Through this assignment, I strengthened my practical understanding of data preprocessing, categorical encoding, class imbalance, ensemble learning, model evaluation and feature importance analysis.
+
+Most importantly, I gained experience translating a business problem into a machine learning solution and communicating the results through a documented technical notebook.
+
+---
+
+## Acknowledgements
+
+This project was completed as part of the **Datheon Machine Learning & Data Science Internship – Task 2**.
+
+Thank you to Datheon for providing practical project-based learning opportunities to develop machine learning and data science skills.
+
+**Programme:** [Datheon Training & Internships](https://www.datheon.in/training)
+
+---
+
+*Developed as part of my ongoing learning journey in Data Science and Machine Learning.*
